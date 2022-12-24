@@ -2,9 +2,8 @@
 
 namespace Idanieldrew\Rabbitmq;
 
-use Idanieldrew\Rabbitmq\Publish\Publisher;
 use Illuminate\Support\ServiceProvider;
-use Rabbitmq;
+use Idanieldrew\Rabbitmq\Rabbitmq;
 
 class RabbitmqServiceProvider extends ServiceProvider
 {
