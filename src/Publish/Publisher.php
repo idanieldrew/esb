@@ -6,15 +6,17 @@ use Idanieldrew\Rabbitmq\Connector;
 
 class Publisher extends Connector
 {
-    public function publish()
+    /**
+     * @param string $routing
+     * @param mixed $message
+     * @return true
+     */
+    public function publish(string $routing, mixed $message)
     {
         $this->getChannel()->basic_publish(
-            "msg",
-            "exchange",
-            "routing_key",
-            "mandatory",
-            "immediate",
-            "ticket"
+            $message,
+            '',
+            'hello'
         );
         return true;
     }

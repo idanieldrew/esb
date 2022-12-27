@@ -3,7 +3,6 @@
 namespace Idanieldrew\Rabbitmq;
 
 use Illuminate\Support\ServiceProvider;
-use Idanieldrew\Rabbitmq\Rabbitmq;
 
 class RabbitmqServiceProvider extends ServiceProvider
 {
@@ -16,8 +15,9 @@ class RabbitmqServiceProvider extends ServiceProvider
 
     public function register()
     {
-        /*$this->app->singleton('Publish', function () {
-            return new Publisher();
-        });*/
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/rabbitmq.php',
+            'rabbitmq'
+        );
     }
 }
