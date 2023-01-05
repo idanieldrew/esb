@@ -4,7 +4,6 @@ namespace Idanieldrew\Rabbitmq\Consume;
 
 use Exception;
 use Idanieldrew\Rabbitmq\Connector;
-use Illuminate\Support\Facades\Log;
 
 class Consumer extends Connector
 {
@@ -12,11 +11,10 @@ class Consumer extends Connector
     {
         try {
             $callback = function ($msg) {
-                Log::info(22);
-                echo ' [x] Received ', $msg->body, "\n";
+                echo ' [x] Received ', $msg->body;
             };
             $this->getChannel()->basic_consume(
-                'hello',
+                $queue,
                 '',
                 false,
                 true,

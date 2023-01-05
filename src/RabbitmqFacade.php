@@ -1,8 +1,6 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq\Facades;
-
-use Closure;
+namespace Idanieldrew\Rabbitmq;
 
 /**
  * @method static publish(string $routing_key, $message)

@@ -2,7 +2,6 @@
 
 namespace Idanieldrew\Rabbitmq;
 
-use Closure;
 use Idanieldrew\Rabbitmq\Consume\Consumer;
 use Idanieldrew\Rabbitmq\Publish\Publisher;
 
