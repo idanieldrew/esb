@@ -1,14 +1,16 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq\Consume;
+namespace Idanieldrew\Esb\Consume;
 
 use Exception;
-use Idanieldrew\Rabbitmq\Connector;
+use Idanieldrew\Esb\Connector;
 
 class Consumer extends Connector
 {
     public function consume($queue)
     {
+        $queue = $queue ?? $this->getData('queue');
+
         try {
             $callback = function ($msg) {
                 echo ' [x] Received ', $msg->body;
@@ -30,6 +32,5 @@ class Consumer extends Connector
             return true;
 //            throw $e;
         }
-
     }
 }

@@ -1,22 +1,22 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq\Publish;
+namespace Idanieldrew\Esb\Publish;
 
-use Idanieldrew\Rabbitmq\Connector;
+use Idanieldrew\Esb\Connector;
 
 class Publisher extends Connector
 {
     /**
-     * @param string $routing
+     * @param string $routing_key
      * @param mixed $message
      * @return true
      */
-    public function publish(string $routing, mixed $message)
+    public function publish(string $routing_key, mixed $message)
     {
         $this->getChannel()->basic_publish(
             $message,
             '',
-            'hello'
+            $this->getData('queue')
         );
         return true;
     }

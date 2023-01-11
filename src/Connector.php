@@ -1,15 +1,15 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq;
+namespace Idanieldrew\Esb;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 class Connector
 {
-    private AMQPStreamConnection $connection;
+    protected AMQPStreamConnection $connection;
 
-    private AMQPChannel $channel;
+    protected AMQPChannel $channel;
 
     public function getConnection(): AMQPStreamConnection
     {
@@ -35,7 +35,8 @@ class Connector
     public function init()
     {
         $this->connect();
-/*        $this->channel->exchange_declare(
+
+        $this->channel->exchange_declare(
             $this->getData('exchange'),
             $this->getData('exchange_type'),
             $this->getData('exchange_passive'),
@@ -43,22 +44,21 @@ class Connector
             $this->getData('exchange_auto_delete'),
             $this->getData('exchange_internal'),
             $this->getData('exchange_nowait')
-        );*/
+        );
 
         $this->channel->queue_declare(
-            'hello',
+            $this->getData('queue'),
             $this->getData('passive', false),
             $this->getData('durable', false),
             $this->getData('exclusive', false),
             $this->getData('nowait', false)
         );
-        return;
-//        $this->connection->set_close_on_destruct();
+        $this->connection->set_close_on_destruct(true);
     }
 
     protected function getData(string $data, $default = null)
     {
-        return config("rabbitmq.$data", $default);
+        return config("esb.$data", $default);
     }
 
     public static function off(AMQPChannel $channel, AMQPStreamConnection $connection): void

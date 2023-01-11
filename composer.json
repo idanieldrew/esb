@@ -2,7 +2,12 @@
     "name": "idanieldrew/rabbitmq",
     "autoload": {
         "psr-4": {
-            "Idanieldrew\\Rabbitmq\\": "src/"
+            "Idanieldrew\\Esb\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Idanieldrew\\Esb\\Test\\": "tests"
         }
     },
     "authors": [
@@ -14,5 +19,9 @@
     "require": {
         "php": "^8.0",
         "php-amqplib/php-amqplib": "^3.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5.8",
+        "orchestra/testbench": "^7.18"
     }
 }

@@ -1,29 +1,29 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq;
+namespace Idanieldrew\Esb;
 
-use Idanieldrew\Rabbitmq\Consume\Consumer;
-use Idanieldrew\Rabbitmq\Publish\Publisher;
+use Idanieldrew\Esb\Consume\Consumer;
+use Idanieldrew\Esb\Publish\Publisher;
 
-class Rabbitmq
+class Esb
 {
     /**
      * @param string $routing_key
      * @param mixed $message
+     * @return void
      */
     public function publish(string $routing_key, mixed $message)
     {
         $publish = resolve(Publisher::class);
         $publish->init();
+
         $message = new Message($message);
         $publish->publish($routing_key, $message);
 
         Connector::off($publish->getChannel(), $publish->getConnection());
-
-        echo 'ok';
     }
 
-    public function consume(string $queue)
+    public function consume(string $queue = null)
     {
         $consume = resolve(Consumer::class);
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq\Queue\Jobs;
+namespace Idanieldrew\Esb\Queue\Jobs;
 
-use Idanieldrew\Rabbitmq\Queue\RabbitmqQueue;
+use Idanieldrew\Esb\Queue\EsbQueue;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as Contract;
 use Illuminate\Queue\Jobs\Job;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class RabbitmqJob extends Job implements Contract
+class EsbJob extends Job implements Contract
 {
     protected $container;
 
@@ -19,7 +19,7 @@ class RabbitmqJob extends Job implements Contract
     protected $channel;
     protected $connection;
 
-    public function __construct(Container $container, RabbitMQQueue $connection, AMQPChannel $channel, $queue, AMQPMessage $message)
+    public function __construct(Container $container, EsbQueue $connection, AMQPChannel $channel, $queue, AMQPMessage $message)
     {
         $this->queue = $queue;
         $this->channel = $channel;

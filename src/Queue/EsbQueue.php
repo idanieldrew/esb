@@ -1,16 +1,15 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq\Queue;
+namespace Idanieldrew\Esb\Queue;
 
-use Idanieldrew\Rabbitmq\Queue\Jobs\RabbitmqJob;
-use Idanieldrew\Rabbitmq\RabbitmqFacade;
+use Idanieldrew\Esb\Queue\Jobs\EsbJob;
 use Illuminate\Contracts\Queue\Queue as Contract;
 use Illuminate\Queue\Queue;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class RabbitmqQueue extends Queue implements Contract
+class EsbQueue extends Queue implements Contract
 {
     public $channel;
 
@@ -82,7 +81,7 @@ class RabbitmqQueue extends Queue implements Contract
         $message = $this->channel->basic_get('hello');
 
         if ($message instanceof AMQPMessage) {
-            return new RabbitmqJob($this->container, $this, $this->connection->channel(), 'queue', $message);
+            return new EsbJob($this->container, $this, $this->connection->channel(), 'queue', $message);
         }
         return null;
     }

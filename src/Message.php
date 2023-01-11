@@ -1,6 +1,6 @@
 <?php
 
-namespace Idanieldrew\Rabbitmq;
+namespace Idanieldrew\Esb;
 
 use PhpAmqpLib\Message\AMQPMessage;
 
