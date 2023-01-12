@@ -2,6 +2,7 @@
 
 namespace Idanieldrew\Esb;
 
+use Closure;
 use Idanieldrew\Esb\Consume\Consumer;
 use Idanieldrew\Esb\Publish\Publisher;
 
@@ -23,13 +24,13 @@ class Esb
         Connector::off($publish->getChannel(), $publish->getConnection());
     }
 
-    public function consume(string $queue = null)
+    public function consume(string $queue, Closure $closure)
     {
         $consume = resolve(Consumer::class);
 
         $consume->init();
 
-        $consume->consume($queue);
+        $consume->consume($queue,$closure);
 
         Connector::off($consume->getChannel(), $consume->getConnection());
     }
