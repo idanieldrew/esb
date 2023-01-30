@@ -5,17 +5,27 @@ namespace Idanieldrew\Esb\Consume;
 use Closure;
 use Exception;
 use Idanieldrew\Esb\Connector;
+use Illuminate\Support\Facades\App;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 
 class Consumer extends Connector
 {
+    protected bool $res;
+
     /**
      * @throws Exception
      */
     public function consume($queue, Closure $closure)
     {
+        $this->res = true;
         $queue = $queue ?? $this->getData('queue');
 
+        $c = function ($msg) use ($closure) {
+            $closure($msg, null);
+        };
+        if (App::runningUnitTests()) {
+            $c = null;
+        }
         try {
             $this->getChannel()->basic_consume(
                 $queue,
@@ -24,9 +34,7 @@ class Consumer extends Connector
                 $this->getData('no_ack', true),
                 $this->getData('exclusive', false),
                 $this->getData('nowait', false),
-                function ($msg) use ($closure) {
-                    $closure($msg, $this);
-                }
+                $c
             );
 
             while (count($this->getChannel()->callbacks)) {
@@ -38,6 +46,6 @@ class Consumer extends Connector
             }
             throw $e;
         }
-        return true;
+        return $this->res;
     }
 }

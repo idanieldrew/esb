@@ -69,11 +69,11 @@ class PublishTest extends TestCase
     public function publish_message()
     {
         $this->channelMock->shouldReceive('basic_publish')->with(
-            "salam",
+            "test",
             "",
             "test_queue"
         )->once();
 
-        $this->assertTrue($this->publishMock->publish("test_queue", "salam"));
+        $this->assertTrue($this->publishMock->publish("test_queue", "test"));
     }
 }

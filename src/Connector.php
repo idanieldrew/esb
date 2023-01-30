@@ -36,6 +36,7 @@ class Connector
     {
         $this->connect();
 
+        // Set exchange
         $this->channel->exchange_declare(
             $this->getData('exchange'),
             $this->getData('exchange_type'),
@@ -46,6 +47,7 @@ class Connector
             $this->getData('exchange_nowait')
         );
 
+        //Set queue
         $this->channel->queue_declare(
             $this->getData('queue'),
             $this->getData('passive', false),

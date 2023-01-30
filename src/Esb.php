@@ -9,6 +9,8 @@ use Idanieldrew\Esb\Publish\Publisher;
 class Esb
 {
     /**
+     * Publish it
+     *
      * @param string $routing_key
      * @param mixed $message
      * @return void
@@ -24,13 +26,20 @@ class Esb
         Connector::off($publish->getChannel(), $publish->getConnection());
     }
 
+    /**
+     * Consume it
+     *
+     * @param string $queue
+     * @param Closure $closure
+     * @return void
+     * @throws \Exception
+     */
     public function consume(string $queue, Closure $closure)
     {
         $consume = resolve(Consumer::class);
-
         $consume->init();
 
-        $consume->consume($queue,$closure);
+        $consume->consume($queue, $closure);
 
         Connector::off($consume->getChannel(), $consume->getConnection());
     }
