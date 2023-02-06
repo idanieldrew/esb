@@ -21,15 +21,24 @@ class Connector
         return $this->channel;
     }
 
-    public function connect(): void
+    /**
+     * Connect to rabbitmq
+     *
+     * @param array|null $data
+     * @return AMQPStreamConnection
+     * @throws \Exception
+     */
+    public function connect(array $data = null)
     {
         $this->connection = new AMQPStreamConnection(
-            $this->getData('host'),
-            $this->getData('port'),
-            $this->getData('user'),
-            $this->getData('password'),
+            $this->setData('host', $data),
+            $this->setData('port', $data),
+            $this->setData('user', $data),
+            $this->setData('password', $data),
         );
         $this->channel = $this->connection->channel();
+
+        return $this->connection;
     }
 
     public function init()
@@ -67,5 +76,17 @@ class Connector
     {
         $channel->close();
         $connection->close();
+    }
+
+    /**
+     * Return value config in queue or esb config
+     *
+     * @param string $name
+     * @param array|null $config
+     * @return mixed
+     */
+    private function setData(string $name, array $config = null)
+    {
+        return $config[$name] ?? $this->getData($name);
     }
 }

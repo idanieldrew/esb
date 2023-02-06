@@ -2,6 +2,7 @@
 
 namespace Idanieldrew\Esb\Queue\Connectors;
 
+use Idanieldrew\Esb\Connector;
 use Idanieldrew\Esb\Queue\EsbQueue;
 use Illuminate\Queue\Connectors\ConnectorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -13,8 +14,8 @@ class EsbConnector implements ConnectorInterface
      */
     public function connect(array $config)
     {
-        $this->connection = new AMQPStreamConnection($config['host'], $config['port'], $config['user'], $config['password']);
+        $connection = (new Connector)->connect($config);
 
-        return new EsbQueue($this->connection, $config);
+        return new EsbQueue($connection, $config);
     }
 }
