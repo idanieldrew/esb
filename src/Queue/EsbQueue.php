@@ -11,10 +11,24 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class EsbQueue extends Queue implements Contract
 {
-    public $channel;
+    protected $channel;
+
+    protected string $queue;
+
+    /**
+     * Get queue
+     *
+     * @param string|null $default
+     * @return string
+     */
+    public function getQueue(string $default = null): string
+    {
+        return $default ?? $this->queue;
+    }
 
     public function __construct(protected AMQPStreamConnection $connection, protected array $config)
     {
+        $this->queue = $config['queue'];
         $this->channel = $this->connection->channel();
     }
 
@@ -23,24 +37,34 @@ class EsbQueue extends Queue implements Contract
         Log::alert('size');
     }
 
+    /**
+     * Push a new job onto the queue.
+     *
+     * @param string|object $job
+     * @param mixed $data
+     * @param string|null $queue
+     * @return mixed
+     */
     public function push($job, $data = '', $queue = null)
     {
         Log::alert('push');
 
+        $queue = $this->getQueue($queue);
+
         return $this->enqueueUsing(
             $job,
-            $this->createPayload($job, "hello", $data),
+            $this->createPayload($job, $queue, $data),
             $queue,
             null,
             function ($payload, $queue) {
-                return $this->pushRaw($payload, "hello");
+                return $this->pushRaw($payload, $queue);
             }
         );
     }
 
     public function pushRaw($payload, $queue = null, array $options = [])
     {
-        Log::alert('pushRaw');
+        Log::alert('pushraw');
 
         $message = new AMQPMessage($payload, [
             'Content-Type' => 'application/json',
@@ -50,7 +74,7 @@ class EsbQueue extends Queue implements Contract
         $this->channel->queue_declare(
             $queue,
             false,
-            false,
+            true,
             false,
             false
         );
@@ -119,6 +143,6 @@ class EsbQueue extends Queue implements Contract
 
     public function release($delay, $job, $data, $queue, $attempts = 0)
     {
-       dd('4444444444');
+        dd('4444444444');
     }
 }
