@@ -92,22 +92,27 @@ class EsbQueue extends Queue implements Contract
 
     public function pop($queue = null)
     {
-        Log::alert('pop');
+        try {
+            $queue = $this->getQueue($queue);
 
-        $this->channel->queue_declare(
-            'hello',
-            false,
-            false,
-            false,
-            false
-        );
+            Log::alert('pop');
 
-        $message = $this->channel->basic_get('hello');
+            $this->channel->queue_declare(
+                $queue,
+                false,
+                true,
+                false,
+                false
+            );
 
-        if ($message instanceof AMQPMessage) {
-            return new EsbJob($this->container, $this, $this->connection->channel(), 'queue', $message);
+            $message = $this->channel->basic_get($queue);
+
+            if ($message instanceof AMQPMessage) {
+                return new EsbJob($this->container, $this, $this->connection->channel(), $queue, $message);
+            }
+        } catch (\Exception $exception) {
+            throw $exception;
         }
-        return null;
     }
 
     public function clear($queue)
@@ -144,5 +149,10 @@ class EsbQueue extends Queue implements Contract
     public function release($delay, $job, $data, $queue, $attempts = 0)
     {
         dd('4444444444');
+    }
+
+    public function ack(EsbJob $job)
+    {
+        $this->channel->basic_ack($job->getMessages()->getDeliveryTag());
     }
 }

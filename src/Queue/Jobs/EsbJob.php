@@ -19,7 +19,7 @@ class EsbJob extends Job implements Contract
     protected $channel;
     protected $connection;
 
-    public function __construct(Container $container, EsbQueue $connection, AMQPChannel $channel, $queue, AMQPMessage $message)
+    public function __construct(Container $container, EsbQueue $connection, AMQPChannel $channel, string $queue, AMQPMessage $message)
     {
         $this->queue = $queue;
         $this->channel = $channel;
@@ -51,7 +51,9 @@ class EsbJob extends Job implements Contract
 
         parent::delete();
 
-        $this->channel->basic_ack($this->message->getDeliveryTag());
+        if (!$this->failed) {
+            $this->connection->ack($this);
+        }
     }
 
     /**
@@ -141,5 +143,10 @@ class EsbJob extends Job implements Contract
     public function constructCustomMessage(array $body)
     {
         return json_encode($body);
+    }
+
+    public function getMessages()
+    {
+        return $this->message;
     }
 }
