@@ -6,7 +6,6 @@ use Idanieldrew\Esb\Queue\EsbQueue;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as Contract;
 use Illuminate\Queue\Jobs\Job;
-use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -15,9 +14,9 @@ class EsbJob extends Job implements Contract
     protected $container;
 
     protected $queue;
-    protected $message;
-    protected $channel;
-    protected $connection;
+    protected AMQPMessage $message;
+    protected AMQPChannel $channel;
+    protected EsbQueue $connection;
 
     public function __construct(Container $container, EsbQueue $connection, AMQPChannel $channel, string $queue, AMQPMessage $message)
     {
@@ -35,8 +34,6 @@ class EsbJob extends Job implements Contract
      */
     public function getRawBody()
     {
-        Log::alert("getrawbody");
-
         return $this->message->body;
     }
 
@@ -47,8 +44,6 @@ class EsbJob extends Job implements Contract
      */
     public function delete()
     {
-        Log::alert("delete");
-
         parent::delete();
 
         if (!$this->failed) {
@@ -63,8 +58,6 @@ class EsbJob extends Job implements Contract
      */
     public function getQueue()
     {
-        Log::alert("getqueue");
-
         return $this->queue;
     }
 
@@ -78,7 +71,6 @@ class EsbJob extends Job implements Contract
     /* public function release($delay = 0)
      {
          parent::release();
-         Log::alert("release");
          $this->delete();
 
          $body = json_decode($this->message->body, true);
@@ -130,19 +122,7 @@ class EsbJob extends Job implements Contract
      */
     public function getJobId()
     {
-        Log::alert('getJobId');
         return 'def';
-    }
-
-    /**
-     * Get the Body as a String to be pushed to RabbitMQ
-     *
-     * @param array $body Data to be pushed
-     * @return string $data     json_encoded-ed $body
-     */
-    public function constructCustomMessage(array $body)
-    {
-        return json_encode($body);
     }
 
     public function getMessages()

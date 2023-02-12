@@ -34,7 +34,7 @@ class EsbQueue extends Queue implements Contract
 
     public function size($queue = null)
     {
-        Log::alert('size');
+        //
     }
 
     /**
@@ -47,8 +47,6 @@ class EsbQueue extends Queue implements Contract
      */
     public function push($job, $data = '', $queue = null)
     {
-        Log::alert('push');
-
         $queue = $this->getQueue($queue);
 
         return $this->enqueueUsing(
@@ -64,8 +62,6 @@ class EsbQueue extends Queue implements Contract
 
     public function pushRaw($payload, $queue = null, array $options = [])
     {
-        Log::alert('pushraw');
-
         $message = new AMQPMessage($payload, [
             'Content-Type' => 'application/json',
             'delivery_mode' => 2,
@@ -74,7 +70,7 @@ class EsbQueue extends Queue implements Contract
         $this->channel->queue_declare(
             $queue,
             false,
-            true,
+            $this->config['durable_queue'],
             false,
             false
         );
@@ -85,8 +81,6 @@ class EsbQueue extends Queue implements Contract
 
     public function later($delay, $job, $data = '', $queue = null)
     {
-        Log::alert('later');
-
         return $this->pushRaw($data, $queue, [$delay]);
     }
 
@@ -95,12 +89,10 @@ class EsbQueue extends Queue implements Contract
         try {
             $queue = $this->getQueue($queue);
 
-            Log::alert('pop');
-
             $this->channel->queue_declare(
                 $queue,
                 false,
-                true,
+                $this->config['durable_queue'],
                 false,
                 false
             );
@@ -113,6 +105,7 @@ class EsbQueue extends Queue implements Contract
         } catch (\Exception $exception) {
             throw $exception;
         }
+        return null;
     }
 
     public function clear($queue)

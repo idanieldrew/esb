@@ -16,7 +16,7 @@ class Publisher extends Connector
         $this->getChannel()->basic_publish(
             $message,
             '',
-            $this->getData('queue')
+            $routing_key
         );
         return true;
     }
