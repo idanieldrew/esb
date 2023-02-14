@@ -34,7 +34,12 @@ class EsbQueue extends Queue implements Contract
 
     public function size($queue = null)
     {
-        //
+        $queue = $this->getQueue($queue);
+        $channel = $this->connection->channel();
+        $result = $channel->queue_declare($queue, true);
+        $channel->close();
+
+        return $result['size'];
     }
 
     /**
