@@ -18,6 +18,7 @@ class Consumer extends Connector
     public function consume($queue, Closure $closure)
     {
         $this->res = true;
+
         $queue = $queue ?? $this->getData('queue');
 
         $c = function ($msg) use ($closure) {

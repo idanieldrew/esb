@@ -57,13 +57,15 @@ class Connector
         );
 
         //Set queue
-        $this->channel->queue_declare(
-            $this->getData('queue'),
-            $this->getData('passive', false),
-            $this->getData('durable', false),
-            $this->getData('exclusive', false),
-            $this->getData('nowait', false)
-        );
+        if (!$this->getData('exchange') == null) {
+            $this->channel->queue_declare(
+                $this->getData('queue'),
+                $this->getData('passive', false),
+                $this->getData('durable', false),
+                $this->getData('exclusive', false),
+                $this->getData('nowait', false)
+            );
+        }
         $this->connection->set_close_on_destruct(true);
     }
 

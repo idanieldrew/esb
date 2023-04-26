@@ -9,7 +9,7 @@ class Publisher extends Connector
     /**
      * @param string $routing_key
      * @param mixed $message
-     * @return true
+     * @return bool
      */
     public function publish(string $routing_key, mixed $message)
     {
