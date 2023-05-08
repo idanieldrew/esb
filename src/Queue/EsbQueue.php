@@ -52,7 +52,6 @@ class EsbQueue extends Queue implements Contract
      */
     public function push($job, $data = '', $queue = null)
     {
-        Log::alert('push');
         $queue = $this->getQueue($queue);
 
         return $this->enqueueUsing(
@@ -68,8 +67,6 @@ class EsbQueue extends Queue implements Contract
 
     public function pushRaw($payload, $queue = null, array $options = [])
     {
-        Log::alert('pushraw');
-
         $message = new AMQPMessage($payload, [
             'Content-Type' => 'application/json',
             'delivery_mode' => 2,
@@ -94,8 +91,6 @@ class EsbQueue extends Queue implements Contract
 
     public function pop($queue = null)
     {
-        Log::alert('pop');
-
         try {
             $queue = $this->getQueue($queue);
 

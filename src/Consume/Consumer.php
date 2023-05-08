@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use Idanieldrew\Esb\Connector;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 
 class Consumer extends Connector
@@ -27,6 +28,23 @@ class Consumer extends Connector
         if (App::runningUnitTests()) {
             $c = null;
         }
+
+        if ($this->getData('exchange') !== null) {
+            list($queue, ,) = $this->getChannel()->queue_declare(
+                $queue,
+                $this->getData('passive'),
+                $this->getData('durable'),
+                $this->getData('exclusive'),
+                $this->getData('auto_delete')
+            );
+
+            $this->getChannel()->queue_bind(
+                $queue,
+                $this->getData('exchange'),
+                $this->getData('routing_key'),
+            );
+        }
+
         try {
             $this->getChannel()->basic_consume(
                 $queue,
@@ -39,7 +57,7 @@ class Consumer extends Connector
             );
 
             while (count($this->getChannel()->callbacks)) {
-                $this->getChannel()->wait(null, false, 1);
+                $this->getChannel()->wait(null, false, $this->getData('timeout', 10));
             }
         } catch (Exception $e) {
             if ($e instanceof AMQPTimeoutException) {

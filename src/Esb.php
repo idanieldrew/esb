@@ -15,13 +15,13 @@ class Esb
      * @param mixed $message
      * @return void
      */
-    public function publish(string $routing_key, mixed $message)
+    public function publish(string $routing_key, string $exchangeName, mixed $message)
     {
         $publish = resolve(Publisher::class);
         $publish->init();
 
         $message = new Message($message);
-        $publish->publish($routing_key, $message);
+        $publish->publish($routing_key, $exchangeName, $message);
 
         Connector::off($publish->getChannel(), $publish->getConnection());
     }

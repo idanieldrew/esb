@@ -45,27 +45,6 @@ class Connector
     {
         $this->connect();
 
-        // Set exchange
-        $this->channel->exchange_declare(
-            $this->getData('exchange'),
-            $this->getData('exchange_type'),
-            $this->getData('exchange_passive'),
-            $this->getData('exchange_durable'),
-            $this->getData('exchange_auto_delete'),
-            $this->getData('exchange_internal'),
-            $this->getData('exchange_nowait')
-        );
-
-        //Set queue
-        if (!$this->getData('exchange') == null) {
-            $this->channel->queue_declare(
-                $this->getData('queue'),
-                $this->getData('passive', false),
-                $this->getData('durable', false),
-                $this->getData('exclusive', false),
-                $this->getData('nowait', false)
-            );
-        }
         $this->connection->set_close_on_destruct(true);
     }
 
