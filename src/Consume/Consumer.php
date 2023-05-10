@@ -6,7 +6,6 @@ use Closure;
 use Exception;
 use Idanieldrew\Esb\Connector;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 
 class Consumer extends Connector

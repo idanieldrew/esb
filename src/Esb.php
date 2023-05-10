@@ -12,6 +12,7 @@ class Esb
      * Publish it
      *
      * @param string $routing_key
+     * @param string $exchangeName
      * @param mixed $message
      * @return void
      */

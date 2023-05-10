@@ -36,7 +36,17 @@ class Connector
             $this->setData('user', $data),
             $this->setData('password', $data),
         );
+
         $this->channel = $this->connection->channel();
+        if ($this->getData('exchange') !== null) {
+          $this->getChannel()->exchange_declare(
+              $this->getData('exchange'),
+              $this->getData('exchange_type'),
+              $this->getData('passive'),
+              $this->getData('durable'),
+              $this->getData('auto_delete')
+          );
+        }
 
         return $this->connection;
     }
