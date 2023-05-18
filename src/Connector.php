@@ -30,25 +30,26 @@ class Connector
      */
     public function connect(array $data = null)
     {
-        $this->connection = new AMQPStreamConnection(
-            $this->setData('host', $data),
-            $this->setData('port', $data),
-            $this->setData('user', $data),
-            $this->setData('password', $data),
-        );
+        $this->connection = $this->connectStream($data);
 
-        $this->channel = $this->connection->channel();
+        $this->setUpChannel();
+
         if ($this->getData('exchange') !== null) {
-          $this->getChannel()->exchange_declare(
-              $this->getData('exchange'),
-              $this->getData('exchange_type'),
-              $this->getData('passive'),
-              $this->getData('durable'),
-              $this->getData('auto_delete')
-          );
+            $this->getChannel()->exchange_declare(
+                $this->getData('exchange'),
+                $this->getData('exchange_type'),
+                $this->getData('passive'),
+                $this->getData('durable'),
+                $this->getData('auto_delete')
+            );
         }
 
         return $this->connection;
+    }
+
+    public function setUpChannel()
+    {
+        $this->channel = $this->connection->channel();
     }
 
     public function init()
@@ -56,6 +57,16 @@ class Connector
         $this->connect();
 
         $this->connection->set_close_on_destruct(true);
+    }
+
+    public function connectStream($data = null)
+    {
+        return new AMQPStreamConnection(
+            $this->setData('host', $data),
+            $this->setData('port', $data),
+            $this->setData('user', $data),
+            $this->setData('password', $data),
+        );
     }
 
     protected function getData(string $data, $default = null)

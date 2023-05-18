@@ -32,8 +32,24 @@ class TestCase extends Orchestra
     protected function defineEnvironment($app)
     {
         // Setup default database to use sqlite :memory:
-        $app['config']->set('rabbitmq.host', 'task_rabbitmq');
-        $app['config']->set('rabbitmq.port', '5672');
+        $app['config']->set('esb.host', 'task_rabbitmq');
+        $app['config']->set('esb.port', '5672');
+        $app['config']->set('esb.queue', 'aaaa');
+        $app['config']->set('esb.user', '5672');
+        $app['config']->set('esb.password', '5672');
+        $app['config']->set('esb.durable_queue', '5672');
+        $app['config']->set('esb.routing_key', '5672');
+        $app['config']->set('esb.exchange_passive', '5672');
+        $app['config']->set('esb.exchange_durable', '5672');
+        $app['config']->set('esb.exchange_auto_delete', '5672');
+        $app['config']->set('esb.exchange_internal', '5672');
+        $app['config']->set('esb.exchange_nowait', '5672');
+        $app['config']->set('esb.exchange_properties', '5672');
+        $app['config']->set('esb.timeout', '5672');
+        $app['config']->set('esb.auto_delete', '5672');
+        $app['config']->set('esb.exclusive', '5672');
+        $app['config']->set('esb.passive', '5672');
+        $app['config']->set('esb.durable', '5672');
     }
 
     /**

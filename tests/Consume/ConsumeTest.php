@@ -35,6 +35,20 @@ class ConsumeTest extends TestCase
             var_dump($message->body);
         };
 
+        $this->channelMock->shouldReceive('queue_declare')->with(
+            "test_queue",
+            false,
+            false,
+            true,
+            false
+        )->times(1)->andReturn('test_queue');
+
+        $this->channelMock->shouldReceive('queue_bind')->with(
+            null,
+            'topic_exchange',
+            'my_routing_key'
+        )->times(1);
+
         $this->channelMock->shouldReceive('basic_consume')->with(
             "test_queue",
             "",
@@ -42,8 +56,8 @@ class ConsumeTest extends TestCase
             true,
             false,
             false,
-            null
-        )->times(1)->andReturn(true);
+            $x
+        )->times(1);
 
         $this->assertTrue($this->consumerMock->consume("test_queue", $x));
     }

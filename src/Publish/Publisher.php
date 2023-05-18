@@ -19,6 +19,7 @@ class Publisher extends Connector
             $exchangeName,
             $routing_key
         );
+
         return true;
     }
 }
