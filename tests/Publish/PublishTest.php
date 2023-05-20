@@ -16,17 +16,6 @@ class PublishTest extends TestCase
     private AMQPChannel $channelMock;
     private AMQPStreamConnection $connectionMock;
 
-    protected function withoutExchange($app)
-    {
-        $app->config->set('esb.exchange', null);
-        $app->config->set('esb.exchange_type', null);
-    }
-
-    protected function usesExchange($app)
-    {
-        $app->config->set('esb.exchange', 'topic_exchange');
-        $app->config->set('esb.exchange_type', 'topic');
-    }
 
     protected function setUp(): void
     {

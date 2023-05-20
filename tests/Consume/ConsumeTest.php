@@ -3,7 +3,6 @@
 namespace Idanieldrew\Esb\Test\Consume;
 
 use Idanieldrew\Esb\Consume\Consumer;
-use Idanieldrew\Esb\Message;
 use Idanieldrew\Esb\Test\TestCase;
 use Mockery;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -27,38 +26,45 @@ class ConsumeTest extends TestCase
         $this->setType(Consumer::class, 'channel', $this->consumerMock, $this->channelMock);
     }
 
-    /** @test */
-    public function consume_message()
+    /**
+     * @test
+     * @define-env usesExchange
+     */
+    public function consume_message_with_exchange()
     {
-        $this->app->instance(Consumer::class, $this->consumerMock);
+        $queue = 'test_queue';
         $x = function ($message, $res) {
             var_dump($message->body);
         };
 
-        $this->channelMock->shouldReceive('queue_declare')->with(
-            "test_queue",
-            false,
-            false,
-            true,
-            false
-        )->times(1)->andReturn('test_queue');
+        $this->consumerMock->shouldReceive('queueOperation')
+            ->once()
+            ->andReturn($queue);
 
-        $this->channelMock->shouldReceive('queue_bind')->with(
-            null,
-            'topic_exchange',
-            'my_routing_key'
-        )->times(1);
+        $this->consumerMock->shouldReceive('consumeQueue')
+            ->with($queue, null)
+            ->once();
 
-        $this->channelMock->shouldReceive('basic_consume')->with(
-            "test_queue",
-            "",
-            false,
-            true,
-            false,
-            false,
-            $x
-        )->times(1);
+        $this->assertEmpty($this->channelMock->callbacks);
+        $this->assertTrue($this->consumerMock->consume($queue, $x));
+    }
 
-        $this->assertTrue($this->consumerMock->consume("test_queue", $x));
+    /**
+     * @test
+     * @define-env withoutExchange
+     */
+    public function consume_message_without_exchange()
+    {
+        $queue = 'test_queue';
+        $x = function ($message, $res) {
+            var_dump($message->body);
+        };
+
+        $this->consumerMock->shouldReceive('consumeQueue')
+            ->with($queue, null)
+            ->once();
+
+        $this->assertEmpty($this->channelMock->callbacks);
+        $this->assertTrue($this->consumerMock->consume($queue, $x));
     }
 }
