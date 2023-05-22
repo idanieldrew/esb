@@ -9,6 +9,7 @@
         "publish",
         "subscribe"
     ],
+    "license": "MIT",
     "homepage": "https://github.com/idanieldrew/esb",
     "authors": [
         {
