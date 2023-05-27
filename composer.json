@@ -44,6 +44,9 @@
         "sort-package": true
     },
     "extra": {
+        "branch-alias": {
+            "dev-main": ""
+        },
         "laravel": {
             "providers": [
                 "Idanieldrew\\Esb\\EsbServiceProvider"

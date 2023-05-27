@@ -30,6 +30,11 @@ class EsbServiceProvider extends ServiceProvider
         );
     }
 
+    /**
+     * Publish
+     *
+     * @return void
+     */
     protected function offerPublishing()
     {
         $this->publishes([
