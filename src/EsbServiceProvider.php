@@ -18,6 +18,8 @@ class EsbServiceProvider extends ServiceProvider
         $manager->addConnector('esb', function () {
             return new EsbConnector;
         });
+
+        $this->offerPublishing();
     }
 
     public function register()
@@ -26,5 +28,12 @@ class EsbServiceProvider extends ServiceProvider
             __DIR__ . '/../config/esb.php',
             'esb'
         );
+    }
+
+    protected function offerPublishing()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/esb.php' => config_path('esb.php')
+        ], 'esb-config');
     }
 }
