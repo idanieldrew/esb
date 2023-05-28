@@ -1,9 +1,9 @@
 <?php
 
-namespace Idanieldrew\Esb\Test\Consume;
+namespace Idanieldrew\Esb\Tests\Consume;
 
 use Idanieldrew\Esb\Consume\Consumer;
-use Idanieldrew\Esb\Test\TestCase;
+use Idanieldrew\Esb\Tests\TestCase;
 use Mockery;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -59,6 +59,11 @@ class ConsumeTest extends TestCase
         $x = function ($message, $res) {
             var_dump($message->body);
         };
+
+        $this->consumerMock->shouldReceive('queueOperation')
+            ->with($queue)
+            ->andReturn($queue)
+            ->once();
 
         $this->consumerMock->shouldReceive('consumeQueue')
             ->with($queue, null)

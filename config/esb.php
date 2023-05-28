@@ -9,7 +9,7 @@ return [
     'password' => 'guest',
     'durable_queue' => true,
     'routing_key' => 'my_routing_key',
-    'exchange' => 'topic_exchange',
+    'exchange' => null,
     'exchange_type' => 'topic',
     'exchange_passive' => false, // topic: false
     'exchange_durable' => false, // topic: false
@@ -19,7 +19,7 @@ return [
     'exchange_properties' => [],
     'timeout' => 5,
     'auto_delete' => false,
-    'exclusive' => true,
+    'exclusive' => false,
     'passive' => false,
     'durable' => false,
 ];

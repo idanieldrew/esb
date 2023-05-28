@@ -1,6 +1,6 @@
 <?php
 
-namespace Idanieldrew\Esb\Test;
+namespace Idanieldrew\Esb\Tests;
 
 use Idanieldrew\Esb\EsbServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;

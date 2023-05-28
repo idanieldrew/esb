@@ -28,9 +28,10 @@ class Consumer extends Connector
             $c = null;
         }
 
-        if ($this->getData('exchange') !== null) {
-            $queue = $this->queueOperation();
-        }
+        /*if ($this->getData('exchange') !== null) {
+            $queue = $this->queueOperation($queue);
+        }*/
+        $queue = $this->queueOperation($queue);
 
         try {
             $this->consumeQueue($queue, $c);
@@ -47,7 +48,7 @@ class Consumer extends Connector
         return $this->res;
     }
 
-    public function queueOperation()
+    public function queueOperation($queue = null)
     {
         list($queue, ,) = $this->getChannel()->queue_declare(
             $queue,
@@ -57,12 +58,13 @@ class Consumer extends Connector
             $this->getData('auto_delete')
         );
 
-        $this->getChannel()->queue_bind(
-            $queue,
-            $this->getData('exchange'),
-            $this->getData('routing_key'),
-        );
-
+        if ($this->getData('exchange') !== null) {
+            $this->getChannel()->queue_bind(
+                $queue,
+                $this->getData('exchange'),
+                $this->getData('routing_key'),
+            );
+        }
         return $queue;
     }
 

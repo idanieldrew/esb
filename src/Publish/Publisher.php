@@ -14,6 +14,9 @@ class Publisher extends Connector
      */
     public function publish(string $routing_key, string $exchangeName, mixed $message)
     {
+        // new
+        $this->queueOperation();
+
         $this->getChannel()->basic_publish(
             $message,
             $exchangeName,
@@ -21,5 +24,16 @@ class Publisher extends Connector
         );
 
         return true;
+    }
+
+    public function queueOperation()
+    {
+        $this->getChannel()->queue_declare(
+            $this->getData('queue'),
+            $this->getData('passive'),
+            $this->getData('durable'),
+            $this->getData('exclusive'),
+            $this->getData('auto_delete')
+        );
     }
 }

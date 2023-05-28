@@ -33,7 +33,6 @@ class Connector
         $this->connection = $this->connectStream($data);
 
         $this->setUpChannel();
-
         if ($this->getData('exchange') !== null) {
             $this->getChannel()->exchange_declare(
                 $this->getData('exchange'),

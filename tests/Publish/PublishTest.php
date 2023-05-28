@@ -1,11 +1,11 @@
 <?php
 
-namespace Idanieldrew\Esb\Test\Publish;
+namespace Idanieldrew\Esb\Tests\Publish;
 
 use Exception;
 use Idanieldrew\Esb\Message;
 use Idanieldrew\Esb\Publish\Publisher;
-use Idanieldrew\Esb\Test\TestCase;
+use Idanieldrew\Esb\Tests\TestCase;
 use Mockery;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -94,6 +94,8 @@ class PublishTest extends TestCase
             'test',
             "test_queue",
         )->once();
+
+        $this->publishMock->shouldReceive('queueOperation')->once();
 
         $ex = null;
         try {
