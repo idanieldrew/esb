@@ -13,7 +13,7 @@ class Esb
      *
      * @param string $routing_key
      * @param mixed $message
-     * @param string $exchangeName
+     * @param string|null $exchangeName
      * @return void
      */
     public function publish(string $routing_key, mixed $message, string $exchangeName = null)
@@ -32,13 +32,17 @@ class Esb
     /**
      * Consume it
      *
-     * @param string $queue
+     * @param string|null $queue
      * @param Closure $closure
      * @return void
      * @throws \Exception
      */
     public function consume(string $queue, Closure $closure)
     {
+        if (empty($queue)) {
+            $queue = config('esb.queue');
+        }
+
         $consume = resolve(Consumer::class);
         $consume->init();
 
@@ -46,4 +50,5 @@ class Esb
 
         Connector::off($consume->getChannel(), $consume->getConnection());
     }
+
 }

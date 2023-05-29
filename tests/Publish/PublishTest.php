@@ -91,15 +91,15 @@ class PublishTest extends TestCase
         $msg = new Message('77');
         $this->channelMock->shouldReceive('basic_publish')->with(
             $msg,
-            'test',
-            "test_queue",
+            "test",
+            "test_queue"
         )->once();
 
         $this->publishMock->shouldReceive('queueOperation')->once();
 
         $ex = null;
         try {
-            $this->publishMock->publish("test_queue", "test", $msg);
+            $this->publishMock->publish("test_queue", $msg,"test");
         } catch (Exception $exception) {
             $ex = $exception;
             throw $ex;

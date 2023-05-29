@@ -11,7 +11,9 @@ Esb support Pub/Sub in php and also support queue driver for Laravel.
 
 * [Installation](#installation)
 * [Usage](#usage)
-    * [Quick start](*quick-start)
+    * [Quick start](#quick-start)
+        * [Publish](#publish)
+        * [Consume](#consume)
 
 ## Installation
 
@@ -31,6 +33,10 @@ and then select "esb-config" tag
 
 ## Usage
 
+### Quick start
+
+#### Publish
+
 Publish messages with default exchange
 
 ```
@@ -40,3 +46,27 @@ use Idanieldrew\Esb\Facades\Esb;
 Esb::publish('queue','message'); 
 
 ```
+
+#### Consume
+
+Consume messages with default exchange
+
+```
+use Idanieldrew\Esb\Facades\Esb;
+
+// Consume messages from queue
+Esb::consume('queue', function ($message, $res) {
+            var_dump($message->body);
+        });
+```
+
+Consume messages from default queue in esb-config:
+
+```
+use Idanieldrew\Esb\Facades\Esb;
+
+Esb::consume('', function ($message, $res) {
+            var_dump($message->body);
+        });
+```
+
