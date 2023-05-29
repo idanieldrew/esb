@@ -8,11 +8,11 @@ class Publisher extends Connector
 {
     /**
      * @param string $routing_key
-     * @param string $exchangeName
      * @param mixed $message
+     * @param mixed $exchangeName
      * @return bool
      */
-    public function publish(string $routing_key, string $exchangeName, mixed $message)
+    public function publish(string $routing_key, mixed $message, mixed $exchangeName)
     {
         // new
         $this->queueOperation();
