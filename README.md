@@ -36,13 +36,7 @@ Publish messages with default exchange
 ```
 use Idanieldrew\Esb\Facades\Esb;
 
-
-Esb::publish('defult_queue', '','default msg'); 
-
-/**
-    queue = 'default_queue'
-    exchange = ''
-    message = 'default msg'
-*/
+// Publish message to queue
+Esb::publish('queue','message'); 
 
 ```

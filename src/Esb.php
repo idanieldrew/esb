@@ -12,17 +12,19 @@ class Esb
      * Publish it
      *
      * @param string $routing_key
-     * @param string $exchangeName
      * @param mixed $message
+     * @param string $exchangeName
      * @return void
      */
-    public function publish(string $routing_key, string $exchangeName, mixed $message)
+    public function publish(string $routing_key, mixed $message, string $exchangeName = null)
     {
+        $exchangeName = $exchangeName ?? config('esb.exchange');
+
         $publish = resolve(Publisher::class);
         $publish->init();
 
         $message = new Message($message);
-        $publish->publish($routing_key, $exchangeName, $message);
+        $publish->publish($routing_key, $message, $exchangeName);
 
         Connector::off($publish->getChannel(), $publish->getConnection());
     }
