@@ -20,7 +20,8 @@
     ],
     "require": {
         "php": "^8.0",
-        "php-amqplib/php-amqplib": "^3.4"
+        "php-amqplib/php-amqplib": "^3.4",
+        "illuminate/support": "^10.12"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.8",
@@ -45,7 +46,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "2.0-dev"
         },
         "laravel": {
             "providers": [
