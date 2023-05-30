@@ -9,7 +9,7 @@ return [
     'password' => 'guest',
     'durable_queue' => true,
     'routing_key' => 'my_routing_key',
-    'exchange' => null,
+    'exchange' => 'topic_exchange_2',
     'exchange_type' => 'topic',
     'exchange_passive' => false, // topic: false
     'exchange_durable' => false, // topic: false

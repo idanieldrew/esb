@@ -32,7 +32,7 @@ class Esb
     /**
      * Consume it
      *
-     * @param string|null $queue
+     * @param string $queue
      * @param Closure $closure
      * @return void
      * @throws \Exception
