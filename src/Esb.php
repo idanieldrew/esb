@@ -16,7 +16,7 @@ class Esb
      * @param string|null $exchangeName
      * @return void
      */
-    public function publish(string $routing_key, mixed $message, string $exchangeName = null)
+    public static function publish(string $routing_key, mixed $message, string $exchangeName = null)
     {
         $exchangeName = $exchangeName ?? config('esb.exchange');
 
