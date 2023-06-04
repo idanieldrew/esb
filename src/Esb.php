@@ -50,5 +50,4 @@ class Esb
 
         Connector::off($consume->getChannel(), $consume->getConnection());
     }
-
 }
