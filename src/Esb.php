@@ -16,7 +16,7 @@ class Esb
      * @param string|null $exchangeName
      * @return void
      */
-    public static function publish(string $routing_key, mixed $message, string $exchangeName = null)
+    public function publish(string $routing_key, mixed $message, string $exchangeName = null)
     {
         $exchangeName = $exchangeName ?? config('esb.exchange');
 
@@ -50,5 +50,4 @@ class Esb
 
         Connector::off($consume->getChannel(), $consume->getConnection());
     }
-
 }
